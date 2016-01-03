@@ -1,9 +1,8 @@
-
 # lib/quick-log.coffee
 
 fs   = require 'fs'
 path = require 'path'
-qLog = require('quick-log.npm') 'quick-log'
+qLog  = require('quick-log-npm') 'quick-log'
 
 module.exports =
   config:
@@ -14,18 +13,19 @@ module.exports =
   activate: ->
     atom.commands.add 'atom-text-editor', "quick-log:add", => @add()  
 
-  toggle: ->
+  add: ->
     if not (@editor = atom.workspace.getActiveTextEditor()) or
   	   not (selRange = @editor.getSelectedBufferRange())    or 
        path.extname(@editor.getPath()).toLowerCase() not in ['.coffee','js']
       return
-    
-    if selRange.begin.isEqual selRange.end
+      
+    if selRange.start.isEqual selRange.end
       # create new debug statement
-      row    = selRange.begin.row
+      row    = selRange.start.row
       indent = @editor.indentationForBufferRow row
-      @editor.setTextInBufferRange {column: 0, row}, 
-        'qLog();\n'
+      @editor.setTextInBufferRange [[row, 0], [row, 0]],
+        "qLog(#{row});\n"
+      @editor.setIndentationForBufferRow row, indent
       
     else
       # add selection to debug statement
