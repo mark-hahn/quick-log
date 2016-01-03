@@ -1,16 +1,17 @@
 {
-  "name": "coffee-trace",
-  "main": "./lib/coffee-trace",
-  "version": "0.2.7",
-  "description": "Add smart trace statements to coffee files with one keypress each.",
+  "name": "quick-log",
+  "main": "./lib/quick-log",
+  "version": "0.1.0",
+  "description": "Atom package to add debug statements with vars in just a few clicks, no typing",
   "activationEvents": [
-    "coffee-trace:toggle"
+    "quick-log:add"
   ],
-  "repository": "https://github.com/mark-hahn/coffee-trace",
+  "repository": "https://github.com/mark-hahn/quick-log",
   "license": "MIT",
   "engines": {
     "atom": ">1.0.0"
   },
   "dependencies": {
+    "quick-log-npm": "^1.0.0"
   }
 }
