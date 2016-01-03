@@ -1,0 +1,16 @@
+{
+  "name": "coffee-trace",
+  "main": "./lib/coffee-trace",
+  "version": "0.2.7",
+  "description": "Add smart trace statements to coffee files with one keypress each.",
+  "activationEvents": [
+    "coffee-trace:toggle"
+  ],
+  "repository": "https://github.com/mark-hahn/coffee-trace",
+  "license": "MIT",
+  "engines": {
+    "atom": ">1.0.0"
+  },
+  "dependencies": {
+  }
+}

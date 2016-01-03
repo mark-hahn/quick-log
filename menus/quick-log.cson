@@ -1,0 +1,16 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'context-menu':
+  '.overlayer':
+      'Toggle Coffee Trace': 'coffee-trace:toggle'
+
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Coffee Trace'
+      'submenu': [
+        { 'label': 'Toggle', 'command': 'coffee-trace:toggle' }
+      ]
+    ]
+  }
+]
