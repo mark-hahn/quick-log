@@ -88,6 +88,16 @@ module.exports =
       while /^\s*qLog\(/.test @editor.lineTextForBufferRow row
         @editor.setTextInBufferRange [[row,0],[row+1,0]], ''
       row++
-    
-    
+
+`
+// Automatically added by quick-log package
+// Do not edit from here to end of file
+// To remove this and debug statements, use "quick-log:remove" (ctrl-alt-?)
+function qLog() {
+  var i, str = new Date().toString().slice(16, 24) + ' xxx';
+  if (arguments.length > 0) str += '(' + arguments[0] + ')';
+  for (i = 1; i < arguments.length; i++) str += ' ' + arguments[i];
+  console.log(str);
+}
+`    
           
