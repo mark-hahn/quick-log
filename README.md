@@ -48,10 +48,10 @@ You can also add label/variables at any later time. Click on the debug statement
 When debugging, each time the debug statement is executed it will write this line format to stdout.
 
 ```
-10:14:23 setDim(99) width: 92 height: 130
+10:14:23 test(99) setDim width: 92 height: 130
 ```
 
-`10:14:23` is a timestamp showing hour, minute, and second. `setDim(99)` is the statement label, in this case a function name, with the line number in parentheses.  ` width: 92` and `height: 130` are values with their variable name.
+`10:14:23` is a timestamp showing hour, minute, and second. `test(99)` is the file name and line number. `setDim` is the statement label, in this case a function name.  ` width: 92` and `height: 130` are values with their variable name.
 
 ## Shortened Labels
 
