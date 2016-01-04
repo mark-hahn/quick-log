@@ -1,2 +1,3 @@
 'atom-text-editor:not(.mini)':
-  'ctrl-?': 'quick-log:add'
+  'ctrl-?':     'quick-log:add'
+  'ctrl-alt-?': 'quick-log:remove'
