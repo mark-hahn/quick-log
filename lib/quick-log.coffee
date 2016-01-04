@@ -7,11 +7,6 @@ Subs = require 'sub-atom'
 jsRegex = /^`?\/\/\sAdded\sby\squick-log[\S\s]+\/\/\sEnd\sof\sqLog\sfunction/
 
 module.exports =
-  config:
-    showLineNumbers:
-      type: 'boolean'
-      default: yes
-
   activate: ->
     @subs = new Subs
     @subs.add atom.commands.add 'atom-text-editor', "quick-log:add",  => @add()  
@@ -23,10 +18,6 @@ module.exports =
       if @editor then @adjustAllLineNums()
       @editor = null
       @adjustAllLineNums()
-    @subs.add atom.config.observe 'quick-log.showLineNumbers', => 
-      for @editor in atom.workspace.getTextEditors() when @validExt()
-        @adjustAllLineNums()
-        @editor = null
       
   validExt: -> 
     ext = path.extname(@editor.getPath()).toLowerCase()
@@ -40,11 +31,7 @@ module.exports =
     if not (@editor = atom.workspace.getActiveTextEditor()) or not @validExt()
       @editor = null
       return false
-    @lineCount = null
-    @chgSub = @editor.onDidStopChanging => 
-      if (lineCount = @editor.getLineCount()) isnt @lineCount
-        @lineCount = lineCount
-        @adjustAllLineNums()
+    @chgSub = @editor.onDidStopChanging => @adjustAllLineNums()
     return true
     
   getLabel: (str) ->
@@ -62,7 +49,7 @@ module.exports =
     else if selRange.start.isEqual selRange.end
       @qLogRow = selRange.start.row
       indent = /^\s*/.exec(@editor.lineTextForBufferRow @qLogRow)[0]
-      lineNum = (if atom.config.get('quick-log.showLineNumbers') then @qLogRow+1 else 0)
+      lineNum = @qLogRow+1
       @editor.setTextInBufferRange [[@qLogRow, 0], [@qLogRow, 0]], indent + "qLog(#{lineNum});\n"
       @addQLogJS()
     else if @qLogRow? and /^\s*qLog\(/.test  @editor.lineTextForBufferRow @qLogRow
@@ -78,7 +65,7 @@ module.exports =
     if not @getEditor() then return
     haveQLog = no
     for row in [0..@editor.getLineCount()]
-      lineNum = (if atom.config.get('quick-log.showLineNumbers') then row+1 else 0)
+      lineNum = row+1
       if (parts = /^(\s*qLog\()\s*([-\d]+)/.exec @editor.lineTextForBufferRow row)
         haveQLog = yes
         if +parts[2] isnt lineNum
