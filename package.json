@@ -1,7 +1,7 @@
 {
   "name": "quick-log",
   "main": "./lib/quick-log",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Atom package to add debug statements with vars in just a few clicks, no typing",
   "repository": "https://github.com/mark-hahn/quick-log",
   "license": "MIT",
