@@ -103,9 +103,14 @@ module.exports =
   
   removeAll: ->
     if not @getEditor() then return
-    @editor.scan /^\s*qLog\(/, (res) =>
-      row = res.range.start.row
-      @editor.setTextInBufferRange [[row, 0],[row+1, 0]], ''
+    delOne = yes
+    while delOne
+      delOne = no
+      @editor.scan /^\s*qLog\(/, (res) =>
+        row = res.range.start.row
+        @editor.setTextInBufferRange [[row, 0],[row+1, 0]], ''
+        delOne = yes
+        res.stop()
     @editor.scan jsRegex, (res) => 
       rowBeg = res.range.start.row
       rowEnd = res.range.end.row + 1
@@ -119,7 +124,7 @@ module.exports =
   js: (label) ->
     """
       // Added by quick-log, do not edit
-      // to remove, use "quick-log:remove" (ctrl-alt-?)
+      // to remove, use "quick-log:clean" (ctrl-alt-?)
       function qLog() {
         var i, args, str = new Date().toString().slice(16,25) + '#{label}';
         if (arguments.length) str += '(' + arguments[0] +')';
@@ -128,3 +133,4 @@ module.exports =
       }
       // End of qLog function
     """
+
