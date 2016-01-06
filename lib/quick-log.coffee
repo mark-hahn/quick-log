@@ -4,12 +4,17 @@ util = require 'util'
 proc = require 'child_process'
 Subs = require 'sub-atom'
 
-jsRegex = /^`?\/\/\sAdded\sby\squick-log[\S\s]+\/\/\sEnd\sof\sqLog\sfunction/
+jsRegex = /^`?\/\/\sAdded\sby\squick-log[\S\s]+\/\/\sEnd\sof\sqLog\sfunction`?/
 
 module.exports =
+  config:
+    labelWidth:
+      type: 'integer'
+      default: 12
+
   activate: ->
     @subs = new Subs
-    @subs.add atom.commands.add 'atom-text-editor', "quick-log:add",  => @add()  
+    @subs.add atom.commands.add 'atom-text-editor', "quick-log:add",   => @add()  
     @subs.add atom.commands.add 'atom-text-editor', "quick-log:clean", => @removeAll()  
     @subs.add atom.workspace.observeTextEditors (@editor) =>
       if @validExt() then @adjustAllLineNums()
@@ -35,11 +40,10 @@ module.exports =
     return true
     
   getLabel: (str) ->
-    label = str.replace /\s+/g, ' '
-    if (ext = path.extname label)
-      label = label[0...label.length-ext.length]
-    if label.length > 8 then label.replace(/[aeiou\W]/gi, '')[0...8] \
-                        else label.replace /\W/g, ''
+    label = str.replace(/\s+/g, ' ').replace /(.js|.coffee)$/, ''
+    maxWidth = atom.config.get 'quick-log.labelWidth'
+    if label.length > maxWidth then label.replace(/[aeiou\W]/gi, '')[0...maxWidth] \
+                               else label.replace /\W/g, ''
   
   add: ->
     if not @getEditor() then return
@@ -99,8 +103,8 @@ module.exports =
         delOne = yes
         res.stop()
     @editor.scan jsRegex, (res) => 
-      rowBeg = res.range.start.row
-      rowEnd = res.range.end.row + 1
+      rowBeg = res.range.start.row - 1
+      rowEnd = res.range.end.row   + 1
       @editor.setTextInBufferRange [[rowBeg,0],[rowEnd,0]], ''
       res.stop()
         
